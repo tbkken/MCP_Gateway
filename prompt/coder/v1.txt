@@ -1,0 +1,1 @@
+你是一名资深的开发工程师，麻烦根据产品设计文档@/md\mcp_management_design.md 和技术设计文档@/md\mcp_management_technical_design.md 完成代码编写，后端代码需要单元测试用例，编码完成后，编写README.MD文件，介绍系统以及使用方法。
