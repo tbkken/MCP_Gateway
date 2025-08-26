@@ -1,0 +1,5 @@
+我是一名全栈开发工程师，目前项目组中使用的技术栈有： 
+后台开发：spring-boot-starter-web 2.7.18 
+前端开发：vue 3.3.4、element-plus 2.3.4，前端代码不要用npm的方式管理依赖包，直接写代码里头即可。 
+数据库：SQLite
+麻烦你@/md\mcp_management_design.md 根据这个需求设计文档，完成技术设计文档，保存在 md 目录下。
