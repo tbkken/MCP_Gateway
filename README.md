@@ -1,136 +1,144 @@
-# MCP服务管理器
+# MCP Manager
 
-MCP服务管理器是一个用于管理和查看MCP（Model Context Protocol）服务工具的Web应用程序。它支持通过HTTP和SSE方式连接到MCP服务器，并获取和展示服务器提供的工具信息。
+MCP Manager is a web-based application for managing Model Context Protocol (MCP) services. It provides a user-friendly interface to configure, test, and monitor MCP services, as well as view the tools available from those services.
 
-## 功能特性
+## Features
 
-- 添加和管理MCP服务
-- 支持HTTP和SSE连接方式
-- 查看MCP服务提供的工具列表
-- 显示工具的详细信息，包括：
-  - 工具名称
-  - 工具描述
-  - 输入参数模式（inputSchema）
-  - 输出结果模式（outputSchema）
-- 测试MCP服务连接
+- **Service Management**: View, add, and delete MCP services
+- **Connection Testing**: Test the connectivity of MCP services
+- **Tool Discovery**: View available tools from configured MCP services
+- **Web Interface**: Intuitive UI built with Vue.js and Element Plus
+- **Persistent Storage**: SQLite database for storing service configurations
 
-## 技术栈
+## Technology Stack
 
-- 后端：Spring Boot + JPA + SQLite
-- 前端：Vue 3 + Element Plus
-- 构建工具：Maven
+- **Backend**: Spring Boot 2.7.18 (Java 11)
+- **Frontend**: Vue 3.3.4, Element Plus 2.3.4
+- **Database**: SQLite
+- **Build Tool**: Maven
 
-## 快速开始
+## Project Structure
 
-### 运行应用
+```
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/example/mcpmanager/
+│   │   │       ├── McpManagerApplication.java
+│   │   │       ├── controller/
+│   │   │       ├── entity/
+│   │   │       ├── repository/
+│   │   │       └── service/
+│   │   └── resources/
+│   │       ├── application.properties
+│   │       ├── static/
+│   │       │   └── index.html
+│   │       └── templates/
+├── pom.xml
+└── mcp.db
+```
 
-1. 确保已安装Java 11+和Maven
-2. 在项目根目录下运行：
+## Getting Started
+
+### Prerequisites
+
+- Java 11 or higher
+- Maven 3.6 or higher
+
+### Installation
+
+1. Clone the repository:
    ```bash
-   ./run.sh
+   git clone https://github.com/tbkken/MCP_Gateway.git
+   cd MCP_Gateway
    ```
-   或在Windows上运行：
-   ```cmd
-   run.bat
+
+2. Build the project:
+   ```bash
+   mvn clean package
    ```
-3. 应用启动后，访问 http://localhost:8080
 
-### 使用说明
+3. Run the application:
+   ```bash
+   java -jar target/mcp-manager-0.0.1-SNAPSHOT.jar
+   ```
 
-1. 添加MCP服务：
-   - 点击"新增MCP服务"按钮
-   - 选择服务类型（HTTP或SSE）
-   - 输入服务URL
-   - 可选：设置超时时间和请求头
-   - 点击"测试连接"验证配置
-   - 点击"确定"保存服务
+### Running with Maven
 
-2. 查看工具信息：
-   - 在服务卡片上点击"查看工具"按钮
-   - 查看工具列表，包括名称和描述
-   - 点击"查看详情"查看工具的完整信息，包括输入参数和输出模式
-
-## 详细文档
-
-为了更好地理解和使用本项目，我们提供了以下详细的文档：
-
-### 📋 用户文档
-- [**用户手册.md**](md/用户手册.md) - 面向最终用户的详细使用指南，包含安装、配置、操作步骤和故障排除
-
-### 🏗️ 开发文档
-- [**项目概述.md**](md/项目概述.md) - 项目整体架构和技术栈介绍
-- [**数据模型.md**](md/数据模型.md) - 数据库设计和实体类说明
-- [**API接口.md**](md/API接口.md) - 后端RESTful API详细说明
-- [**业务逻辑.md**](md/业务逻辑.md) - 核心业务逻辑和MCP协议处理
-- [**前端界面.md**](md/前端界面.md) - 前端界面设计和交互逻辑
-- [**MCP协议规范.md**](md/MCP协议规范.md) - MCP协议实现规范和兼容性说明
-
-### ⚙️ 运维文档
-- [**部署运维.md**](md/部署运维.md) - 部署方式、配置管理和故障排除
-- [**开发指南.md**](md/开发指南.md) - 开发环境搭建、代码规范和扩展开发指南
-
-## API接口
-
-### MCP服务管理
-
-- `GET /api/mcp-servers` - 获取所有MCP服务
-- `GET /api/mcp-servers/{id}` - 根据ID获取MCP服务
-- `POST /api/mcp-servers` - 创建或更新MCP服务
-- `DELETE /api/mcp-servers/{id}` - 删除MCP服务
-- `POST /api/mcp-servers/test` - 测试MCP服务连接
-
-### 工具信息获取
-
-- `GET /api/mcp-servers/{id}/tools` - 获取MCP服务的工具列表
-
-## MCP协议支持
-
-本应用支持MCP协议的工具发现功能，能够解析以下格式的工具信息：
-
-1. 标准格式：`{ "tools": [...] }`
-2. 包装在result对象中：`{ "result": { "tools": [...] } }`
-3. 根数组格式：`[...]`
-4. 包装在data对象中：`{ "data": { "tools": [...] } }`
-
-每个工具包含以下信息：
-- `name`：工具名称
-- `description`：工具描述
-- `inputSchema`：输入参数模式（JSON Schema格式）
-- `outputSchema`：输出结果模式（JSON Schema格式）
-
-## 项目结构
-
-```
-src/
-├── main/
-│   ├── java/com/example/mcpmanager/
-│   │   ├── controller/     # 控制器层
-│   │   ├── entity/         # 实体类
-│   │   ├── repository/     # 数据访问层
-│   │   ├── service/        # 服务层
-│   │   └── util/           # 工具类
-│   └── resources/
-│       ├── static/         # 静态资源（前端页面）
-│       └── application.properties  # 配置文件
-```
-
-## 构建和运行
-
+Alternatively, you can run the application directly with Maven:
 ```bash
-# 清理并编译项目
-mvn clean compile
-
-# 运行应用
 mvn spring-boot:run
-
-# 打包应用
-mvn package
 ```
 
-## 贡献
+## Usage
 
-欢迎提交Issue和Pull Request来改进这个项目。
+After starting the application, open your browser and navigate to `http://localhost:8080`.
 
-## 许可证
+### Managing MCP Services
 
-MIT License
+1. **Add a Service**:
+   - Click the "新增MCP服务" (Add MCP Service) button
+   - Fill in the service details:
+     - Name: A unique identifier for the service
+     - Type: Service type (SSE or HTTP)
+     - URL: The endpoint URL for the MCP service
+   - Optional settings:
+     - Timeout: Connection timeout in seconds
+     - Headers: Custom HTTP headers for authentication
+   - Click "测试" (Test) to verify the connection
+   - Click "确定" (Confirm) to save the service
+
+2. **View Tools**:
+   - Click "查看工具" (View Tools) on any service card
+   - See the list of available tools with their input and output schemas
+
+3. **Delete a Service**:
+   - Click "删除" (Delete) on any service card
+   - Confirm the deletion in the dialog
+
+## API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/mcp-servers` | Get all MCP services |
+| GET | `/api/mcp-servers/{id}` | Get a specific MCP service by ID |
+| POST | `/api/mcp-servers` | Create or update an MCP service |
+| DELETE | `/api/mcp-servers/{id}` | Delete an MCP service by ID |
+| POST | `/api/mcp-servers/test` | Test connection to an MCP service |
+| GET | `/api/mcp-servers/{id}/tools` | Get tools available from an MCP service |
+
+### Example Service Configuration
+
+```json
+{
+  "name": "user info system",
+  "type": "sse",
+  "url": "http://127.0.0.1:10002/sse/",
+  "timeout": 60,
+  "headers": {
+    "Authorization": "Bearer 54bfe0d6-803f-4f60-9bed-0d7709731011"
+  }
+}
+```
+
+## Database
+
+The application uses SQLite for data persistence. The database file (`mcp.db`) is automatically created when the application starts.
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a pull request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details if it exists.
+
+## Acknowledgments
+
+- Built with [Spring Boot](https://spring.io/projects/spring-boot)
+- UI powered by [Vue.js](https://vuejs.org/) and [Element Plus](https://element-plus.org/)
+- Database management with [SQLite](https://www.sqlite.org/)
